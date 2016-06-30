@@ -1,18 +1,20 @@
 /*
   Copyright 2016 Statoil ASA.
   This file is part of the Open Porous Media project (OPM).
+
   OPM is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
+
   OPM is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
+
   You should have received a copy of the GNU General Public License
   along with OPM.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 #include <ert/ecl/ecl_sum.h>
 #include <iostream>
@@ -57,7 +59,7 @@ public:
     ref_data_vec(nullptr),
     checking_vec(nullptr),
     check_data_vec(nullptr),
-     keys1(stringlist_alloc_new()),
+    keys1(stringlist_alloc_new()),
     keys2(stringlist_alloc_new()),
     keys_short(stringlist_alloc_new()),
     keys_long(stringlist_alloc_new()) {}
@@ -82,11 +84,13 @@ public:
   bool open(const char* smspecFile1, const stringlist_type* unsmryFile1, const char* smspecFile2, const stringlist_type* unsmryFile2);
   void close();
   void setDataSets(std::vector<double> &time_vec1,std::vector<double> &time_vec2);
-  void setKeys(); // Creates a keylist containing all the keywords in a summary file. When the number of keywords are not
-  // equal in the two files of interest, it figures out which that contains most/less keywords
+  void setKeys();
+  // Creates a keylist containing all the keywords in a summary file.
+  // When the number of keywords are not equal in the two files of interest, 
+  // it figures out which that contains most/less keywords
   void setToleranceLevels(double relative_tolerance_max, double relative_tolerance_median_max);
   void setTimeVecs(std::vector<double> &time_vec1,std::vector<double> &time_vec2);
-  void setDataVecs(std::vector<double> &data_vec1,std::vector<double> &data_vec2, int index1, int index2); //Read the data from the two files into separate vectors. Not necessary the same amount of values, but the values correspond to the same interval in time. Thus possible to interpolate values. 
+  void setDataVecs(std::vector<double> &data_vec1,std::vector<double> &data_vec2, int index1, int index2); 
   void getDeviations(); 
   void chooseReferance(std::vector<double> &time_vec1,std::vector<double> &time_vec2,std::vector<double> &data_vec1,std::vector<double> &data_vec2);
   void evaluateDeviations(std::vector<double> &absdev_vec, std::vector<double> &reldev_vec);
@@ -108,33 +112,33 @@ int main (int argc, char ** argv){
     printHelp();
     return 0;
   }
- try
-   {
-  const char * smspecFile1 = argv[1];
-  const char * unsmryFile1 = argv[2];
-  const char * smspecFile2 = argv[3];
-  const char * unsmryFile2 = argv[4];
-  double relative_tolerance_max = 1 ;
-  double relative_tolerance_median_max = 0.1;
-  stringlist_type * file1 = stringlist_alloc_new();
-  stringlist_type * file2 = stringlist_alloc_new();
-  stringlist_append_copy(file1, unsmryFile1);
-  stringlist_append_copy(file2, unsmryFile2);
+  try
+    {
+      const char * smspecFile1 = argv[1];
+      const char * unsmryFile1 = argv[2];
+      const char * smspecFile2 = argv[3];
+      const char * unsmryFile2 = argv[4];
+      double relative_tolerance_max = 1 ;
+      double relative_tolerance_median_max = 0.1;
+      stringlist_type * file1 = stringlist_alloc_new();
+      stringlist_type * file2 = stringlist_alloc_new();
+      stringlist_append_copy(file1, unsmryFile1);
+      stringlist_append_copy(file2, unsmryFile2);
  
 
-  SummaryReader read(relative_tolerance_max,relative_tolerance_median_max); //may also use sat function for tolerance limits
-  read.open(smspecFile1, file1, smspecFile2, file2);
-  read.setKeys();
-  read.getDeviations();
-  read.close();
-  stringlist_free(file1);
-  stringlist_free(file2);
-   }
- catch(const std::exception& e) {
-   std::cerr << "Program threw an exception: " << e.what() << std::endl; 
-   return EXIT_FAILURE;
- }
- return 0; 
+      SummaryReader read(relative_tolerance_max,relative_tolerance_median_max); //may also use sat function for tolerance limits
+      read.open(smspecFile1, file1, smspecFile2, file2);
+      read.setKeys();
+      read.getDeviations();
+      read.close();
+      stringlist_free(file1);
+      stringlist_free(file2);
+    }
+  catch(const std::exception& e) {
+    std::cerr << "Program threw an exception: " << e.what() << std::endl; 
+    return EXIT_FAILURE;
+  }
+  return 0; 
 }
 
 
@@ -142,8 +146,8 @@ bool SummaryReader::open(const char* smspecFile1, const stringlist_type* unsmryF
   //opens the files
   
   
-    ecl_sum1 = ecl_sum_fread_alloc(smspecFile1, unsmryFile1, ":");
-    ecl_sum2 = ecl_sum_fread_alloc(smspecFile2, unsmryFile2, ":");
+  ecl_sum1 = ecl_sum_fread_alloc(smspecFile1, unsmryFile1, ":");
+  ecl_sum2 = ecl_sum_fread_alloc(smspecFile2, unsmryFile2, ":");
   
 
   if (ecl_sum1 == nullptr || ecl_sum2 == nullptr) {
@@ -183,9 +187,7 @@ void SummaryReader::setKeys(){
 
 }
 
-void SummaryReader::getDeviations(){
-
-  
+void SummaryReader::getDeviations(){ 
   std::vector<double> time_vec1, time_vec2;
   setTimeVecs(time_vec1, time_vec2);  // Sets the time vectors, they are equal for all keywords (WPOR:PROD01 etc)
   setDataSets(time_vec1, time_vec2);
@@ -206,10 +208,7 @@ void SummaryReader::getDeviations(){
 	reldev_vec.clear();
   
 
-	setDataVecs(data_vec1,data_vec2, ivar, jvar);
-
-	//Figures out which vector containing the lesser elements. Sets this as referance_vec and its corresponding 
-	// data as ref_data_vec. The other vector-set as checking_vec( the time vector) and check_data_vec. 
+	setDataVecs(data_vec1,data_vec2, ivar, jvar); 
 
  
 	chooseReferance(time_vec1, time_vec2,data_vec1,data_vec2);
@@ -217,7 +216,7 @@ void SummaryReader::getDeviations(){
 	evaluateDeviations(absdev_vec, reldev_vec);
 	break;
       }
- //will only enter here if no keyword match
+      //will only enter here if no keyword match
       if(jvar == stringlist_get_size(keys_long)-1){
 	OPM_THROW(std::invalid_argument, "No match on keyword");
       }
@@ -301,6 +300,8 @@ void SummaryReader::setTimeVecs(std::vector<double> &time_vec1,std::vector<doubl
 
 }
 
+
+//Read the data from the two files into separate vectors. Not necessary the same amount of values, but the values correspond to the same interval in time. Thus possible to interpolate values. 
 void SummaryReader::setDataVecs(std::vector<double> &data_vec1,std::vector<double> &data_vec2, int index1, int index2){
   //bool_vector_type * and int_vector_type * variables makes it possible to get the data corresponding to a certain keyword.
   //
@@ -338,9 +339,9 @@ void SummaryReader::setDataVecs(std::vector<double> &data_vec1,std::vector<doubl
    
 }
 
-
+//Figures out which time vector that contains the fewer elements. Sets this as referance_vec and its corresponding 
+// data as ref_data_vec. The other vector-set as checking_vec( the time vector) and check_data_vec.
 void SummaryReader::chooseReferance(std::vector<double> &time_vec1,std::vector<double> &time_vec2,std::vector<double> &data_vec1,std::vector<double> &data_vec2){
-  //This function is suppose to choose which vector that is referance vector, but when it is in use, get segmentation error
   if(time_vec1.size() <= time_vec2.size()){
     referance_vec = &time_vec1; // time vector
     ref_data_vec = &data_vec1; //data vector

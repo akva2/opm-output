@@ -40,6 +40,7 @@ list (APPEND TEST_SOURCE_FILES
         tests/test_Restart.cpp
         tests/test_Wells.cpp
         tests/test_Summary.cpp
+
 )
 
 
