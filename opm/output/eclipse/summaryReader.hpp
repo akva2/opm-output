@@ -7,7 +7,6 @@
 #include <ert/util/int_vector.h>
 #include <ert/util/bool_vector.h>
 #include <opm/common/ErrorMacros.hpp>
-void printHelp();
 
 
 struct Deviation {
@@ -83,4 +82,3 @@ public:
   static double average(std::vector<double> &vec);
 };
 
-void printHelp();
