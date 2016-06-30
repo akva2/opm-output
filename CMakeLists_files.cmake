@@ -29,6 +29,10 @@ list (APPEND EXAMPLE_SOURCE_FILES
 		 applications/compareSummary.cpp
 )
 
+list (APPEND PROGRAM_SOURCE_FILES
+		 applications/compareSummary.cpp	
+)
+
 list (APPEND TEST_SOURCE_FILES
         tests/test_EclipseWriter.cpp
         tests/test_RFT.cpp
