@@ -35,20 +35,20 @@ public:
   SummaryReader(): 
     ecl_sum1(nullptr), 
     ecl_sum2(nullptr),
-  ecl_sum_file_short(nullptr), 
+    ecl_sum_file_short(nullptr), 
     ecl_sum_file_long(nullptr),
     referance_vec(nullptr),
     ref_data_vec(nullptr),
     checking_vec(nullptr),
     check_data_vec(nullptr),
-     keys1(stringlist_alloc_new()),
+    keys1(stringlist_alloc_new()),
     keys2(stringlist_alloc_new()),
     keys_short(stringlist_alloc_new()),
     keys_long(stringlist_alloc_new()) {}
   SummaryReader(double relative_tolerance_max, double relative_tolerance_median_max):
     ecl_sum1(nullptr),
     ecl_sum2(nullptr),
-  ecl_sum_file_short(nullptr), 
+    ecl_sum_file_short(nullptr), 
     ecl_sum_file_long(nullptr),
     referance_vec(nullptr),
     ref_data_vec(nullptr),
@@ -70,7 +70,7 @@ public:
   // equal in the two files of interest, it figures out which that contains most/less keywords
   void setToleranceLevels(double relative_tolerance_max, double relative_tolerance_median_max);
   void setTimeVecs(std::vector<double> &time_vec1,std::vector<double> &time_vec2);
-  void setDataVecs(std::vector<double> &data_vec1,std::vector<double> &data_vec2, int index1, int index2); //Read the data from the two files into separate vectors. Not necessary the same amount of values, but the values correspond to the same interval in time. Thus possible to interpolate values. 
+  void setDataVecs(std::vector<double> &data_vec1,std::vector<double> &data_vec2, int index1, int index2); 
   void getDeviations(); 
   void chooseReferance(std::vector<double> &time_vec1,std::vector<double> &time_vec2,std::vector<double> &data_vec1,std::vector<double> &data_vec2);
   void evaluateDeviations(std::vector<double> &absdev_vec, std::vector<double> &reldev_vec);

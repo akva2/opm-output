@@ -131,31 +131,7 @@ Deviation SummaryReader::calculateDeviations(double val1, double val2){
   return deviation;
 }
 
-double SummaryReader::linearPolation(double check_value, double check_value_prev , double time_array[3]){
-  //does a Linear Polation
-  double time_check = time_array[0]; 
-  double time_check_prev = time_array[1];
-  double time_reference = time_array[2];
-  double sloap, factor, lp_value;
-  sloap = (check_value - check_value_prev)/double(time_check - time_check_prev);
-  factor = (time_reference - time_check_prev)/double(time_check - time_check_prev);
-  lp_value = check_value_prev + factor*sloap; 
-  return lp_value;
-}
 
-double SummaryReader::median(std::vector<double> &vec) {
-  // Sorts and returns the median in a std::vector<double>
-  if(vec.empty()){ 
-    return 0;
-  }
-  else {
-    std::sort(vec.begin(), vec.end());
-    if(vec.size() % 2 == 0)
-      return (vec[vec.size()/2 - 1] + vec[vec.size()/2]) / 2;
-    else
-      return vec[vec.size()/2];
-  }
-}
 
 void SummaryReader::setTimeVecs(std::vector<double> &time_vec1,std::vector<double> &time_vec2){
   int first_report1 = ecl_sum_get_first_report_step( ecl_sum1 );
@@ -184,7 +160,7 @@ void SummaryReader::setTimeVecs(std::vector<double> &time_vec1,std::vector<doubl
 //Read the data from the two files into separate vectors. Not necessary the same amount of values, but the values correspond to the same interval in time. Thus possible to interpolate values. 
 void SummaryReader::setDataVecs(std::vector<double> &data_vec1,std::vector<double> &data_vec2, int index1, int index2){
   //bool_vector_type * and int_vector_type * variables makes it possible to get the data corresponding to a certain keyword.
-  //
+  
   bool_vector_type  * has_var1   = bool_vector_alloc( stringlist_get_size( keys_short ), false );
   int_vector_type   * var_index1 = int_vector_alloc( stringlist_get_size( keys_short ), -1 );
   bool_vector_iset( has_var1 , index1 , true );
@@ -216,6 +192,16 @@ void SummaryReader::setDataVecs(std::vector<double> &data_vec1,std::vector<doubl
   }
  
 
+  void SummaryReader::setDataSets(std::vector<double> &time_vec1,std::vector<double> &time_vec2){
+    if(time_vec1.size()< time_vec2.size()){
+      ecl_sum_file_short = this->ecl_sum1;
+      ecl_sum_file_long = this->ecl_sum2;
+    }
+    else{
+      ecl_sum_file_short = this->ecl_sum2;
+      ecl_sum_file_long = this->ecl_sum1;
+    }
+  }
    
 }
 
@@ -277,9 +263,6 @@ void SummaryReader::findDeviations(std::vector<double>& absdev_vec,std::vector<d
      
     }
   }
-  //  for(int it = 0; it < reldev_vec.size(); it++){
-  // std::cout << reldev_vec[it] << std::endl;  
-  //}
 }
 
 
@@ -321,13 +304,29 @@ double SummaryReader::average(std::vector<double> &vec){
 }
 
 
-void SummaryReader::setDataSets(std::vector<double> &time_vec1,std::vector<double> &time_vec2){
-  if(time_vec1.size()< time_vec2.size()){
-    ecl_sum_file_short = this->ecl_sum1;
-    ecl_sum_file_long = this->ecl_sum2;
+
+double SummaryReader::linearPolation(double check_value, double check_value_prev , double time_array[3]){
+  //does a Linear Polation
+  double time_check = time_array[0]; 
+  double time_check_prev = time_array[1];
+  double time_reference = time_array[2];
+  double sloap, factor, lp_value;
+  sloap = (check_value - check_value_prev)/double(time_check - time_check_prev);
+  factor = (time_reference - time_check_prev)/double(time_check - time_check_prev);
+  lp_value = check_value_prev + factor*sloap; 
+  return lp_value;
+}
+
+double SummaryReader::median(std::vector<double> &vec) {
+  // Sorts and returns the median in a std::vector<double>
+  if(vec.empty()){ 
+    return 0;
   }
-  else{
-    ecl_sum_file_short = this->ecl_sum2;
-    ecl_sum_file_long = this->ecl_sum1;
+  else {
+    std::sort(vec.begin(), vec.end());
+    if(vec.size() % 2 == 0)
+      return (vec[vec.size()/2 - 1] + vec[vec.size()/2]) / 2;
+    else
+      return vec[vec.size()/2];
   }
 }
