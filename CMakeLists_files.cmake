@@ -25,6 +25,10 @@ list (APPEND PUBLIC_HEADER_FILES
         opm/output/vtk/writeVtkData.hpp
     )
 
+list (APPEND EXAMPLE_SOURCE_FILES
+		 applications/compareSummary.cpp
+)
+
 list (APPEND TEST_SOURCE_FILES
         tests/test_EclipseWriter.cpp
         tests/test_RFT.cpp
@@ -33,6 +37,8 @@ list (APPEND TEST_SOURCE_FILES
         tests/test_Wells.cpp
         tests/test_Summary.cpp
 )
+
+
 
 # originally generated with the command:
 # find tests -name '*.xml' -a ! -wholename '*/not-unit/*' -printf '\t%p\n' | sort
