@@ -41,6 +41,8 @@ bool SummaryReader::open(const char* smspecFile1, const stringlist_type* unsmryF
 void SummaryReader::close() {
   ecl_sum_free_data(ecl_sum1);
   ecl_sum_free_data(ecl_sum2);
+  ecl_sum_free_data(ecl_sum_file_short);
+  ecl_sum_free_data(ecl_sum_file_long);
   stringlist_free(keys1);
   stringlist_free(keys2);
   stringlist_free(keys_short);
@@ -91,7 +93,7 @@ void SummaryReader::getDeviations(){
 	setDataVecs(data_vec1,data_vec2, ivar, jvar); 
 
  
-	chooseReferance(time_vec1, time_vec2,data_vec1,data_vec2);
+	chooseReference(time_vec1, time_vec2,data_vec1,data_vec2);
 	findDeviations(absdev_vec, reldev_vec);
 	evaluateDeviations(absdev_vec, reldev_vec);
 	break;
@@ -205,17 +207,17 @@ void SummaryReader::setDataVecs(std::vector<double> &data_vec1,std::vector<doubl
    
 
 
-//Figures out which time vector that contains the fewer elements. Sets this as referance_vec and its corresponding 
+//Figures out which time vector that contains the fewer elements. Sets this as reference_vec and its corresponding 
 // data as ref_data_vec. The other vector-set as checking_vec( the time vector) and check_data_vec.
-void SummaryReader::chooseReferance(std::vector<double> &time_vec1,std::vector<double> &time_vec2,std::vector<double> &data_vec1,std::vector<double> &data_vec2){
+void SummaryReader::chooseReference(std::vector<double> &time_vec1,std::vector<double> &time_vec2,std::vector<double> &data_vec1,std::vector<double> &data_vec2){
   if(time_vec1.size() <= time_vec2.size()){
-    referance_vec = &time_vec1; // time vector
+    reference_vec = &time_vec1; // time vector
     ref_data_vec = &data_vec1; //data vector
     checking_vec = &time_vec2;
     check_data_vec = &data_vec2;     
   }
   else{
-    referance_vec = &time_vec2;
+    reference_vec = &time_vec2;
     ref_data_vec = &data_vec2;
     checking_vec = &time_vec1;
     check_data_vec = &data_vec1;
@@ -229,25 +231,24 @@ void SummaryReader::findDeviations(std::vector<double>& absdev_vec,std::vector<d
   int jvar = 0 ;
   Deviation dev; 
 
-  //here the referance and checking vectors are in use. Iterate over the referance vector
+  //here the reference and checking vectors are in use. Iterate over the reference vector
   //and tries to match it with the checking vector
-  for (int ivar = 0; ivar < referance_vec->size(); ivar++){
+  for (int ivar = 0; ivar < reference_vec->size(); ivar++){
 
     while (true){
-      if((*referance_vec)[ivar] == (*checking_vec)[jvar]){
+      if((*reference_vec)[ivar] == (*checking_vec)[jvar]){
 	//Check without linear interpolation
 	dev = SummaryReader::calculateDeviations((*ref_data_vec)[ivar], (*check_data_vec)[jvar]); 
 	absdev_vec.push_back(dev.absolute_deviation);
 	reldev_vec.push_back(dev.relative_deviation);
-	//std::cout << "time " << (*referance_vec)[ivar]<< "Refdata " << (*ref_data_vec)[ivar] <<  " Check data " << (*check_data_vec)[jvar]<<std::endl;
 	break;
       }
-      else if((*referance_vec)[ivar]<(*checking_vec)[jvar]){
+      else if((*reference_vec)[ivar]<(*checking_vec)[jvar]){
 	// Check with Linear polized arguments, jvar
-	double time_array[3]; // should contain { [time of occurance after referance] , [time of occurance before referance] , [time of referance] }
+	double time_array[3]; // should contain { [time of occurance after reference] , [time of occurance before reference] , [time of reference] }
 	time_array[0]= (*checking_vec)[jvar]; 
 	time_array[1]= (*checking_vec)[jvar -1];
-	time_array[2]= (*referance_vec)[ivar];
+	time_array[2]= (*reference_vec)[ivar];
 	double lp_value = SummaryReader::linearPolation((*check_data_vec)[jvar], (*check_data_vec)[jvar-1],time_array);
 	dev = SummaryReader::calculateDeviations((*ref_data_vec)[ivar], lp_value);
 	absdev_vec.push_back(dev.absolute_deviation);

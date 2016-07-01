@@ -45,7 +45,7 @@ private:
   double relative_tolerance_max = 0;
   double relative_tolerance_median_max = 0;
   double absolute_tolerance_max = 0;
-  std::vector<double> * referance_vec = nullptr;
+  std::vector<double> * reference_vec = nullptr;
   std::vector<double> * ref_data_vec = nullptr;
   std::vector<double> * checking_vec = nullptr;
   std::vector<double> * check_data_vec = nullptr;
@@ -67,7 +67,7 @@ public:
   void setTimeVecs(std::vector<double> &time_vec1,std::vector<double> &time_vec2);
   void setDataVecs(std::vector<double> &data_vec1,std::vector<double> &data_vec2, int index1, int index2); 
   void getDeviations(); 
-  void chooseReferance(std::vector<double> &time_vec1,std::vector<double> &time_vec2,std::vector<double> &data_vec1,std::vector<double> &data_vec2);
+  void chooseReference(std::vector<double> &time_vec1,std::vector<double> &time_vec2,std::vector<double> &data_vec1,std::vector<double> &data_vec2);
   void findDeviations(std::vector<double>& absdev_vec,std::vector<double>& reldev_vec);
   void evaluateDeviations(std::vector<double> &absdev_vec, std::vector<double> &reldev_vec);
 
