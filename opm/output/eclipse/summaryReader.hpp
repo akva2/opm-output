@@ -14,52 +14,29 @@ struct Deviation {
   double absolute_deviation; 
 };
 
-
 class SummaryReader {
 private:
-  ecl_sum_type* ecl_sum1;
-  ecl_sum_type* ecl_sum2;
-  ecl_sum_type* ecl_sum_file_short;
-  ecl_sum_type * ecl_sum_file_long;
-  stringlist_type* keys1;
-  stringlist_type* keys2; 
-  stringlist_type * keys_short;
-  stringlist_type * keys_long;
-  double relative_tolerance_max;
-  double relative_tolerance_median_max;
-  std::vector<double> * referance_vec;
-  std::vector<double> * ref_data_vec;
-  std::vector<double> * checking_vec;
-  std::vector<double> * check_data_vec;
+  ecl_sum_type* ecl_sum1 = nullptr;
+  ecl_sum_type* ecl_sum2 = nullptr;
+  ecl_sum_type* ecl_sum_file_short = nullptr;
+  ecl_sum_type * ecl_sum_file_long = nullptr;
+  stringlist_type* keys1 = stringlist_alloc_new();
+  stringlist_type* keys2 = stringlist_alloc_new(); 
+  stringlist_type * keys_short = stringlist_alloc_new();
+  stringlist_type * keys_long = stringlist_alloc_new();
+  double relative_tolerance_max = 0;
+  double relative_tolerance_median_max = 0;
+  double absolute_tolerance_max = 0;
+  std::vector<double> * referance_vec = nullptr;
+  std::vector<double> * ref_data_vec = nullptr;
+  std::vector<double> * checking_vec = nullptr;
+  std::vector<double> * check_data_vec = nullptr;
 public:
-  SummaryReader(): 
-    ecl_sum1(nullptr), 
-    ecl_sum2(nullptr),
-    ecl_sum_file_short(nullptr), 
-    ecl_sum_file_long(nullptr),
-    referance_vec(nullptr),
-    ref_data_vec(nullptr),
-    checking_vec(nullptr),
-    check_data_vec(nullptr),
-    keys1(stringlist_alloc_new()),
-    keys2(stringlist_alloc_new()),
-    keys_short(stringlist_alloc_new()),
-    keys_long(stringlist_alloc_new()) {}
+  SummaryReader(){} 
+
   SummaryReader(double relative_tolerance_max, double relative_tolerance_median_max):
-    ecl_sum1(nullptr),
-    ecl_sum2(nullptr),
-    ecl_sum_file_short(nullptr), 
-    ecl_sum_file_long(nullptr),
-    referance_vec(nullptr),
-    ref_data_vec(nullptr),
-    checking_vec(nullptr),
-    check_data_vec(nullptr),
     relative_tolerance_max(relative_tolerance_max),
-    relative_tolerance_median_max(relative_tolerance_median_max),
-    keys1(stringlist_alloc_new()),
-    keys2(stringlist_alloc_new()),
-    keys_short(stringlist_alloc_new()),
-    keys_long(stringlist_alloc_new())
+    relative_tolerance_median_max(relative_tolerance_median_max)
   {} 
 
 

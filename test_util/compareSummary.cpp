@@ -48,12 +48,13 @@ int main (int argc, char ** argv){
       stringlist_append_copy(file1, unsmryFile1);
       stringlist_append_copy(file2, unsmryFile2);
  
-
+      SummaryReader read_;//Two types of constructors, this one need to use setToleranceLevels(double, double).
       SummaryReader read(relative_tolerance_max,relative_tolerance_median_max); //may also use sat function for tolerance limits
       read.open(smspecFile1, file1, smspecFile2, file2);
       read.setKeys();
       read.getDeviations();
       read.close();
+      read_.close();
       stringlist_free(file1);
       stringlist_free(file2);
     }
