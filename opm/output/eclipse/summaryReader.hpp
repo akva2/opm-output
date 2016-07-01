@@ -17,13 +17,9 @@
 +   */
 
 
-#include <ert/ecl/ecl_sum.h>
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <ert/util/stringlist.h>
-#include <ert/util/int_vector.h>
-#include <ert/util/bool_vector.h>
 #include <opm/common/ErrorMacros.hpp>
 
 
@@ -32,16 +28,23 @@ struct Deviation {
   double absolute_deviation; 
 };
 
+
+// Prototype ert types
+struct stringlist_struct;
+typedef struct stringlist_struct stringlist_type;
+struct ecl_sum_struct;
+typedef struct ecl_sum_struct ecl_sum_type;
+
 class SummaryReader {
 private:
   ecl_sum_type* ecl_sum1 = nullptr;
   ecl_sum_type* ecl_sum2 = nullptr;
   ecl_sum_type* ecl_sum_file_short = nullptr;
   ecl_sum_type * ecl_sum_file_long = nullptr;
-  stringlist_type* keys1 = stringlist_alloc_new();
-  stringlist_type* keys2 = stringlist_alloc_new(); 
-  stringlist_type * keys_short = stringlist_alloc_new();
-  stringlist_type * keys_long = stringlist_alloc_new();
+  stringlist_type* keys1 = nullptr;
+  stringlist_type* keys2 = nullptr;
+  stringlist_type * keys_short = nullptr;
+  stringlist_type * keys_long = nullptr;
   double relative_tolerance_max = 0;
   double relative_tolerance_median_max = 0;
   double absolute_tolerance_max = 0;
@@ -49,13 +52,16 @@ private:
   std::vector<double> * ref_data_vec = nullptr;
   std::vector<double> * checking_vec = nullptr;
   std::vector<double> * check_data_vec = nullptr;
-public:
-  SummaryReader(){} 
 
-  SummaryReader(double relative_tolerance_max, double relative_tolerance_median_max):
+  void init();
+public:
+  SummaryReader() { init(); } 
+
+  SummaryReader(double relative_tolerance_max,
+                double relative_tolerance_median_max) :
     relative_tolerance_max(relative_tolerance_max),
     relative_tolerance_median_max(relative_tolerance_median_max)
-  {} 
+  { init(); }
 
 
   bool open(const char* smspecFile1, const stringlist_type* unsmryFile1, const char* smspecFile2, const stringlist_type* unsmryFile2);

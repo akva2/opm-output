@@ -18,9 +18,19 @@
 
 
 #include <opm/output/eclipse/summaryReader.hpp>
+#include <ert/ecl/ecl_sum.h>
+#include <ert/util/stringlist.h>
+#include <ert/util/int_vector.h>
+#include <ert/util/bool_vector.h>
 
 
-
+void SummaryReader::init()
+{
+  keys1 = stringlist_alloc_new();
+  keys2 = stringlist_alloc_new();
+  keys_short = stringlist_alloc_new();
+  keys_long = stringlist_alloc_new();
+}
 
 bool SummaryReader::open(const char* smspecFile1, const stringlist_type* unsmryFile1, const char * smspecFile2, const stringlist_type* unsmryFile2){
   //opens the files

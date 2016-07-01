@@ -16,7 +16,13 @@
   along with OPM.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+
 #include <opm/output/eclipse/summaryReader.hpp>
+#include <ert/ecl/ecl_sum.h>
+#include <ert/util/stringlist.h>
+#include <ert/util/int_vector.h>
+#include <ert/util/bool_vector.h>
+
 
 void printHelp(){
   std::cout << "Invalid input." << std::endl;
