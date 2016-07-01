@@ -273,15 +273,14 @@ void SummaryReader::evaluateDeviations(std::vector<double> &absdev_vec, std::vec
   }
 
 
-  double avr_absdev = SummaryReader::average(absdev_vec);
-  double avr_reldev = SummaryReader::average(reldev_vec);
+  SummaryReader::average(absdev_vec);
+  SummaryReader::average(reldev_vec);
 
-  double medianValueAbs = SummaryReader::median(absdev_vec);
+  SummaryReader::median(absdev_vec);
   double medianValueRel = SummaryReader::median(reldev_vec);
 
   // Vectors get sorted in function SummaryReader::median(), thus max value at the end of the vectors
-  double max_absdev, max_reldev; 
-  max_absdev =  absdev_vec.back();
+  double max_reldev;
   max_reldev =  reldev_vec.back();
   if(max_reldev > relative_tolerance_max || medianValueRel > relative_tolerance_median_max){
     std::cout << "The maximum relative deviation is " << max_reldev << ".  The tolerance level is " << relative_tolerance_max << std::endl; 
