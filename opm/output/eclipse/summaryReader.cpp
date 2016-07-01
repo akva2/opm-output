@@ -244,7 +244,7 @@ void SummaryReader::findDeviations(std::vector<double>& absdev_vec,std::vector<d
       }
       else if((*referance_vec)[ivar]<(*checking_vec)[jvar]){
 	// Check with Linear polized arguments, jvar
-	double time_array[3];
+	double time_array[3]; // should contain { [time of occurance after referance] , [time of occurance before referance] , [time of referance] }
 	time_array[0]= (*checking_vec)[jvar]; 
 	time_array[1]= (*checking_vec)[jvar -1];
 	time_array[2]= (*referance_vec)[ivar];
@@ -313,7 +313,7 @@ double SummaryReader::linearPolation(double check_value, double check_value_prev
   double sloap, factor, lp_value;
   sloap = (check_value - check_value_prev)/double(time_check - time_check_prev);
   factor = (time_reference - time_check_prev)/double(time_check - time_check_prev);
-  lp_value = check_value_prev + factor*sloap; 
+  lp_value = check_value_prev + factor*sloap*(time_check - time_check_prev); 
   return lp_value;
 }
 
