@@ -296,11 +296,7 @@ void SummaryReader::setToleranceLevels(double relative_tolerance_max, double rel
 }
 
 double SummaryReader::average(std::vector<double> &vec){
-  double sum_vector = 0;
-  for (int it = 0; it < vec.size(); it++){
-    sum_vector += vec[it];
-  }
-  return sum_vector/double(vec.size());
+  return std::accumulate(vec.begin(), vec.end(), 0.0) / vec.size();
 }
 
 
