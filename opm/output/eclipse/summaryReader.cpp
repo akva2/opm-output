@@ -233,7 +233,7 @@ void SummaryReader::findDeviations(std::vector<double>& absdev_vec,std::vector<d
 
   //here the reference and checking vectors are in use. Iterate over the reference vector
   //and tries to match it with the checking vector
-  for (int ivar = 0; ivar < reference_vec->size(); ivar++){
+  for (size_t ivar = 0; ivar < reference_vec->size(); ivar++){
 
     while (true){
       if((*reference_vec)[ivar] == (*checking_vec)[jvar]){
