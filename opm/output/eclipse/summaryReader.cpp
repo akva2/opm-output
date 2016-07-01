@@ -92,7 +92,7 @@ void SummaryReader::getDeviations(){
 
  
 	chooseReferance(time_vec1, time_vec2,data_vec1,data_vec2);
-	SummaryReader::findDeviations(absdev_vec, reldev_vec, referance_vec, checking_vec, ref_data_vec, check_data_vec);
+	findDeviations(absdev_vec, reldev_vec);
 	evaluateDeviations(absdev_vec, reldev_vec);
 	break;
       }
@@ -190,7 +190,7 @@ void SummaryReader::setDataVecs(std::vector<double> &data_vec1,std::vector<doubl
     time_index = ecl_sum_iget_report_end( ecl_sum_file_long , report );
     data_vec2.push_back(ecl_sum_iget(ecl_sum_file_long, time_index, int_vector_iget( var_index2 , index2 )));
   }
- 
+}
 
   void SummaryReader::setDataSets(std::vector<double> &time_vec1,std::vector<double> &time_vec2){
     if(time_vec1.size()< time_vec2.size()){
@@ -203,7 +203,7 @@ void SummaryReader::setDataVecs(std::vector<double> &data_vec1,std::vector<doubl
     }
   }
    
-}
+
 
 //Figures out which time vector that contains the fewer elements. Sets this as referance_vec and its corresponding 
 // data as ref_data_vec. The other vector-set as checking_vec( the time vector) and check_data_vec.
@@ -224,7 +224,7 @@ void SummaryReader::chooseReferance(std::vector<double> &time_vec1,std::vector<d
 
 }
 
-void SummaryReader::findDeviations(std::vector<double>& absdev_vec,std::vector<double>& reldev_vec,std::vector<double> *referance_vec,std::vector<double>* checking_vec ,std::vector<double> *ref_data_vec,std::vector<double> *check_data_vec){
+void SummaryReader::findDeviations(std::vector<double>& absdev_vec,std::vector<double>& reldev_vec){
     
   int jvar = 0 ;
   Deviation dev; 

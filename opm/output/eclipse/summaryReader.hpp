@@ -73,12 +73,13 @@ public:
   void setDataVecs(std::vector<double> &data_vec1,std::vector<double> &data_vec2, int index1, int index2); 
   void getDeviations(); 
   void chooseReferance(std::vector<double> &time_vec1,std::vector<double> &time_vec2,std::vector<double> &data_vec1,std::vector<double> &data_vec2);
+  void findDeviations(std::vector<double>& absdev_vec,std::vector<double>& reldev_vec);
   void evaluateDeviations(std::vector<double> &absdev_vec, std::vector<double> &reldev_vec);
 
-  static Deviation calculateDeviations( double val1, double val2); static double max(std::vector<double>& vec);
+  static Deviation calculateDeviations( double val1, double val2); 
+  static double max(std::vector<double>& vec);
   static double median(std::vector<double>& vec);
   static double linearPolation(double check_value, double check_value_prev, double time_array[3]);
-  static void findDeviations(std::vector<double>& absdev_vec,std::vector<double>& reldev_vec,std::vector<double> *referance_vec,std::vector<double>* checking_vec ,std::vector<double> *ref_data_vec,std::vector<double> *check_data_vec);
   static double average(std::vector<double> &vec);
 };
 
