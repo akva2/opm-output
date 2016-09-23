@@ -55,6 +55,7 @@
 #include <ert/ecl/ecl_rsthead.h>
 #include <ert/util/util.h>
 #define OPM_XWEL      "OPM_XWEL"
+#define OPM_IWEL      "OPM_IWEL"
 
 // namespace start here since we don't want the ERT headers in it
 namespace Opm {
@@ -699,17 +700,19 @@ void EclipseWriter::writeTimeStep(int report_step,
 
         const auto sz = wells.bhp.size() + wells.perf_pressure.size()
                       + wells.perf_rate.size() + wells.temperature.size()
-                      + wells.well_rate.size();
+                      + wells.well_rate.size() + wells.perf_phase_rate.size();
         std::vector< double > xwel;
         xwel.reserve( sz );
 
         for( const auto& vec : { wells.bhp, wells.temperature, wells.well_rate,
-                                 wells.perf_pressure, wells.perf_rate } )
+                                 wells.perf_pressure,
+                                 wells.perf_rate, wells.perf_phase_rate } )
             xwel.insert( xwel.end(), vec.begin(), vec.end() );
 
         restartHandle.add_kw( ERT::EclKW< int >(IWEL_KW, iwell_data) );
         restartHandle.add_kw( ERT::EclKW< const char* >(ZWEL_KW, zwell_data ) );
         restartHandle.add_kw( ERT::EclKW< double >(OPM_XWEL, xwel ) );
+        restartHandle.add_kw( ERT::EclKW< int >( OPM_IWEL, wells.well_control) );
         restartHandle.add_kw( ERT::EclKW< int >( ICON_KW, icon_data ) );
 
 

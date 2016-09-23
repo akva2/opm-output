@@ -106,7 +106,9 @@ namespace Opm {
                       std::vector< double > temperature,
                       std::vector< double > wellrates,
                       std::vector< double > perf_pressure,
-                      std::vector< double > perf_rates );
+                      std::vector< double > perf_rates,
+                      std::vector< double > perf_phase_rates,
+                      std::vector< int > well_controls);
 
         std::map< std::string, Well > wells;
         std::vector< double > bhp;
@@ -114,6 +116,8 @@ namespace Opm {
         std::vector< double > well_rate;
         std::vector< double > perf_pressure;
         std::vector< double > perf_rate;
+        std::vector< double > perf_phase_rate;
+        std::vector< int > well_control;
     };
 
     /* IMPLEMENTATIONS */
@@ -205,13 +209,15 @@ namespace Opm {
                          std::vector< double > t,
                          std::vector< double > w,
                          std::vector< double > pp,
-                         std::vector< double > pr ) :
+                         std::vector< double > pr,
+                         std::vector< double > ppr,
+                         std::vector< int > cnt) :
         wells( l ),
         bhp( b ),
         temperature( t ),
         well_rate( w ),
         perf_pressure( pp ),
-        perf_rate( pr ) {
+        perf_rate( pr ), perf_phase_rate(ppr), well_control(cnt) {
         // TODO: size asserts and sanity checks in debug mode
     }
 

@@ -182,18 +182,19 @@ data::Wells mkWells() {
         { 5.67, 6.78, 7.89, 8.90, 9.01, 10.12 };
 
     std::vector< double > perf_press = {
-        20.41, 21.19, 22.41,
-        23.19, 24.41, 25.19,
-        26.41, 27.19, 28.41
+        20.41, 21.19, 22.41
     };
 
-    std::vector< double > perf_rate = {
+    std::vector< double> perf_rate = {1.0, 2.0, 3.0};
+
+    std::vector< double > perf_press_rate = {
         30.45, 31.19, 32.45,
         33.19, 34.45, 35.19,
         36.45, 37.19, 38.45,
     };
 
-    return { {}, bhp, temp, well_rates, perf_press, perf_rate };
+    return { {}, bhp, temp, well_rates,
+             perf_press, perf_rate, perf_press_rate, {1, 1} };
 }
 
 data::Solution mkSolution( int numCells ) {

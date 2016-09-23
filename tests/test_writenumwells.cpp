@@ -154,7 +154,9 @@ BOOST_AUTO_TEST_CASE(EclipseWriteRestartWellInfo) {
         { 2.1, 2.2, 2.3 },
         { 3.11, 3.12, 3.13, 3.21, 3.22, 3.23, 3.31, 3.32, 3.33 },
         { 4.1, 4.2, 4.3, 4.4 },
-        { 4.1, 4.2, 4.3, 4.4 }
+        { 4.1, 4.2, 4.3, 4.4 },
+        { },
+        { }
     };
 
     for(int timestep = 0; timestep <= countTimeStep; ++timestep){

@@ -111,7 +111,8 @@ namespace {
     inline data::Wells restoreOPM_XWEL( ecl_file_type* file,
                                         int num_wells,
                                         int num_phases ) {
-        const char* keyword = "OPM_XWEL";
+        const char* keyword  = "OPM_XWEL";
+        const char* keyword2 = "OPM_IWEL";
 
         ecl_kw_type* xwel = ecl_file_iget_named_kw( file, keyword, 0 );
         const double* xwel_data = ecl_kw_get_double_ptr(xwel);
@@ -125,19 +126,29 @@ namespace {
         const double* wellrate_end = wellrate_begin + (num_wells * num_phases);
 
         const auto remaining = std::distance( wellrate_end, xwel_end );
-        const auto perf_elems = remaining / 2;
+        const auto perf_elems = remaining / (2 + num_phases);
 
         const double* perfpres_begin = wellrate_end;
         const double* perfpres_end = perfpres_begin + perf_elems;
         const double* perfrate_begin = perfpres_end;
         const double* perfrate_end = perfrate_begin + perf_elems;
+        const double* perfphase_begin = perfrate_end;
+        const double* perfphase_end = perfphase_begin + num_phases*perf_elems;
+
+        ecl_kw_type* iwel = ecl_file_iget_named_kw( file, keyword2, 0 );
+        const int* control_begin = ecl_kw_get_int_ptr(iwel);
+        std::vector<int> well_control;
+        if (control_begin)
+          well_control = {control_begin, control_begin + num_wells };
 
         return { {},
             { bhp_begin, bhp_end },
             { temp_begin, temp_end },
             { wellrate_begin, wellrate_end },
             { perfpres_begin, perfpres_end },
-            { perfrate_begin, perfrate_end }
+            { perfrate_begin, perfrate_end },
+            { perfphase_begin, perfphase_end },
+            well_control
         };
     }
 }
